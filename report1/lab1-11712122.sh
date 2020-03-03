@@ -7,17 +7,32 @@
 # b) the result file not exist:build a new
 # c) the folder path store in [] is not absolute path(basename)
 # d) get the absolute path fron ../
+# e) the test path has blank
 # handle problem a
 SAVEIFS=$IFS
 IFS=$(echo -en "\n\b") 
 
+a=""
+number=$(($#-1))
+count=0
+last=""
+for var in "$@"
+do
+    if [ ! $count -eq $number ]; then
+        a=$a$var
+    else
+        last=$var
+    fi
+    count=$((${count}+1))
+done
+
 # handle problem d
 original=`pwd`
-cd $1
+cd $a
 root_path=`pwd`
 cd $original
 
-result_file=$2
+result_file=$last
 
 folder_count=0
 file_count=0
